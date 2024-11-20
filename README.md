@@ -1,0 +1,1 @@
+Repositorio para o tp1 de Projeto de Analise de Algoritmos, no qual devera ser implementado um programa que que dado um arquivo de entrada que representa um espaço geografico e funções implementadas + backtracking
