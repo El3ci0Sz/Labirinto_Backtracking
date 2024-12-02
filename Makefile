@@ -1,21 +1,16 @@
-SRC_DIR = src
-INCLUDE_DIR = include
-
-# Compilador e flags
 CC = gcc
-CFLAGS = -I$(INCLUDE_DIR) -Wall
+CFLAGS = -Iinclude
+SRC = src/menu.c src/main.c src/Labirinto.c
+OBJ = $(SRC:.c=.o)
+TARGET = make
 
-# Arquivos fonte e objetos
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
-OBJ_FILES = $(SRC_FILES:$(SRC_DIR)/%.c=$(SRC_DIR)/%.o)
+all: $(TARGET)
 
-# Nome do executável
-EXEC = Labirinto_Backtracking
+$(TARGET): $(OBJ)
+	$(CC) $(OBJ) -o $(TARGET)
 
-# Regra para compilar o programa
-$(EXEC): $(OBJ_FILES)
-	$(CC) -o $(EXEC) $(OBJ_FILES)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-# Regra para compilar arquivos .c em arquivos .o
-$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) -c $(CFLAGS) $< -o $@
+clean:
+	rm -f $(OBJ) $(TARGET)
