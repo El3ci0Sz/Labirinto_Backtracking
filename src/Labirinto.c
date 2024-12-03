@@ -46,3 +46,39 @@ void liberar_labirinto(Labirinto* labirinto) {
     free(labirinto->matriz);
     free(labirinto);
 }
+
+void imprimir_labirinto(Labirinto* labirinto) {
+    printf("%d %d %d\n", labirinto->linhas, labirinto->colunas, labirinto->chaves);
+    for (int i = 0; i < labirinto->linhas; i++) {
+        for (int j = 0; j < labirinto->colunas; j++) {
+            printf("%d", labirinto->matriz[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+// Função para exibir o labirinto de forma visual
+void exibir_labirinto_visual(Labirinto* labirinto) {
+    for (int i = 0; i < labirinto->linhas; i++) {
+        for (int j = 0; j < labirinto->colunas; j++) {
+            switch (labirinto->matriz[i][j]) {
+                case 0:
+                    printf("\033[0;32mG "); // Ponto inicial em verde
+                    break;
+                case 1:
+                    printf("\033[0;37m. "); // Espaço vazio em branco
+                    break;
+                case 2:
+                    printf("\033[0;34m# "); // Parede em azul
+                    break;
+                case 3:
+                    printf("\033[0;33m| "); // Porta em amarelo
+                    break;
+                default:
+                    printf("\033[0m? "); // Caractere desconhecido sem cor
+                    break;
+            }
+        }
+        printf("\033[0m\n");
+    }
+}
