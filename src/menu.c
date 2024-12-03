@@ -3,6 +3,7 @@
 //
 #include "../include/Labirinto.h"
 #include "../include/Menu.h"
+#include "../include/LabirintoTeste.h"
 
 void menu() {
     Labirinto* labirinto = NULL; // Ponteiro para armazenar o labirinto carregado
@@ -10,10 +11,13 @@ void menu() {
     
     do {
         // Exibe o menu principal
-        printf("\nVOCE ESTÁ PRESO NO PRÉDIO DO SAPIENS, FUJA SE FOR CAPAZ!\n");
-        printf("1) Carregar novo arquivo de dados\n");
-        printf("2) Processar e exibir resposta\n");
-        printf("3) Sair do programa\n");
+        printf("-----------------------------------------------------------\n");
+        printf("|  VOCE ESTÁ PRESO NO PRÉDIO DO SAPIENS, FUJA SE FOR CAPAZ!|\n");
+        printf("|  1) Carregar novo arquivo de dados                       |\n");
+        printf("|  2) Processar e exibir resposta                          |\n");
+        printf("|  3) Gerar labirinto de teste                             |\n");
+        printf("|  4) Sair do programa                                     |\n");
+        printf("-----------------------------------------------------------\n");
         printf("Digite sua escolha: ");
 
         scanf("%d", &opcao);
@@ -38,17 +42,33 @@ void menu() {
                 }
                 break;
             }
-            case 2:
+            case 2: {
                 // Placeholder para processar o labirinto
                 printf("Funcionalidade ainda não implementada.\n");
                 break;
-            case 3:
+            }
+            case 3: {
+                printf("Gerar labirinto de testes.\n");
+                int linhas = 10, colunas = 10, num_portas = 5, num_chaves = 2, dificuldade = 70;
+
+            // Gera o labirinto
+                Labirinto* labirinto = gerar_labirinto_aleatorio(linhas, colunas, num_portas, num_chaves, dificuldade);
+
+            // Imprime o labirinto gerado
+                exibir_labirinto_visual(labirinto);
+
+            // Libera a memória alocada
+            liberar_labirinto(labirinto);
+                break;
+            }
+            case 4: {
                 printf("Saindo do programa.\n");
                 break;
+            }
             default:
                 printf("Opção inválida. Tente novamente.\n");
         }
-    } while (opcao != 3);
+    } while (opcao != 4);
 
     // Libera memória antes de sair, se necessário
     if (labirinto != NULL) {
