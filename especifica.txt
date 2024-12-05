@@ -1,0 +1,59 @@
+Nao se pode passar pela parede, chegou em uma parede tem de voltar e tentar outra alternativa
+Nao se pode passar por uma porta se nao tiver chaves sobrando, erro, tem de voltar
+
+Voltou em uma porta que usou uma chave pode pegar a chave de volta
+
+Nao se sabe se importa numero de tentivas erradas, ou numero de chaves usadas
+
+objetivo: 
+-Escapar, caminhar pelos quadrados ate chegar na linha de cima, [0][x]
+-Encontrar um caminho que leve o estudante da posição inicial, ate uma das celulas da linha de cima
+-Mostrar na tela cada tentativa de movimento feita e qual o caminho encontrado
+
+Posições:
+
+Verde = posição inicial
+Azul =  Paredes, nao se pode passar
+Vermelho = porta, acessivel com chave
+
+Movimentos:
+
+Para cima, para baixo e para os lados. Nao se pode na diagonal
+-Todo movimento conta
+-Movimento de volta, tambem conta para a soma total s
+-Percebeu que n tem saida, o codigo termina com o estudante ficando na msm celula
+
+
+Usar backtracking
+Função recursiva movimenta_estudante
+-Chamar uma vez entao ela chamara a si mesma ate achar um caminho valido, ou entao ...
+
+
+Saida:
+
+
+O programa deverá imprimir a resposta na tela. Cada posição ocupada pelo estudante deverá ser impressa em 
+uma linha da saída. Imaginando que o estudante tenha começado na linha 9 e coluna 4, e depois tenha se 
+movimentado para a linha 8 e coluna 4, as duas primeiras linhas do resultado seriam, portanto:
+
+Linha: 9 Coluna: 4
+Linha: 8 Coluna: 4
+
+Ao final da execução e da impressão de todas as células pelas quais o estudante passou, deverá ser 
+impressa a quantidade total de movimentos feitos e em qual coluna da primeira linha o estudante chegou. 
+Exemplo:
+
+O estudante se movimentou 25 vezes e chegou na coluna 7 da primeira linha
+
+além disso, o labirinto pode não ter saída! Nesse caso o estudante para na célula em que estiver 
+quando perceber que não há saída e será impresso pelo programa (por exemplo):
+
+O estudante se movimentou 25 vezes e percebeu que o labirinto nao tem saida.
+
+
+Modo Analise:
+
+-Caso nao estiver, o codigo funcionara normalmente
+-Se estiver, tambem devera contabilizar o numero total de chamadas recursivas e o nive maximo de 
+recursividade alcançado
+
