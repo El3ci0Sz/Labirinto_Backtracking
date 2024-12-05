@@ -1,5 +1,45 @@
 #include "../include/Labirinto.h"
 
+Labirinto* cria_labirinto_vazio(int linhas, int colunas) {
+    // Aloca memória para a estrutura Labirinto
+    Labirinto* labirinto = (Labirinto*)malloc(sizeof(Labirinto));
+    if (labirinto == NULL) {
+        printf("Erro: Falha ao alocar memória para o labirinto.\n");
+        return NULL;
+    }
+
+    labirinto->linhas = linhas;
+    labirinto->colunas = colunas;
+
+    // Aloca memória para a matriz do labirinto
+    labirinto->matriz = (int**)malloc(linhas * sizeof(int*));
+    if (labirinto->matriz == NULL) {
+        printf("Erro: Falha ao alocar memória para as linhas do labirinto.\n");
+        free(labirinto);
+        return NULL;
+    }
+
+    for (int i = 0; i < linhas; i++) {
+        labirinto->matriz[i] = (int*)malloc(colunas * sizeof(int));
+        if (labirinto->matriz[i] == NULL) {
+            printf("Erro: Falha ao alocar memória para as colunas do labirinto.\n");
+            for (int j = 0; j < i; j++) {
+                free(labirinto->matriz[j]);
+            }
+            free(labirinto->matriz);
+            free(labirinto);
+            return NULL;
+        }
+
+        // Inicializa todas as posições como 0
+        for (int j = 0; j < colunas; j++) {
+            labirinto->matriz[i][j] = 0;
+        }
+    }
+
+    return labirinto;
+}
+
 // Função para carregar o labirinto de um arquivo
 Labirinto* carregar_labirinto(const char* nome_arquivo) {
     FILE* arquivo = fopen(nome_arquivo, "r");
@@ -27,6 +67,10 @@ Labirinto* carregar_labirinto(const char* nome_arquivo) {
                 fclose(arquivo);
                 liberar_labirinto(labirinto);
                 return NULL;
+            }
+            if(celula == '3'){
+                labirinto->posicao_inicial[0] = i;
+                labirinto->posicao_inicial[1] = j;
             }
             labirinto->matriz[i][j] = celula - '0';
         }
@@ -72,7 +116,10 @@ void exibir_labirinto_visual(Labirinto* labirinto) {
                     printf("\033[0;34m# "); // Parede em azul
                     break;
                 case 3:
-                    printf("\033[0;33m| "); // Porta em amarelo
+                    printf("\033[0;31m| "); // Porta em vermelho
+                    break;
+                case 4:
+                    printf("\033[0;33m| "); // Chave no chão em amarelo
                     break;
                 default:
                     printf("\033[0m? "); // Caractere desconhecido sem cor

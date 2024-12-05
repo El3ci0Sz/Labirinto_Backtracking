@@ -1,12 +1,13 @@
-//
-// Created by rangi on 20/11/2024.
-//
 #include "../include/Labirinto.h"
 #include "../include/Menu.h"
 #include "../include/LabirintoTeste.h"
+#include "../include/Backtracking.h"
+
+#define ModoAnalise 0 //0 para desligado, 1 para ligado
 
 void menu() {
     Labirinto* labirinto = NULL; // Ponteiro para armazenar o labirinto carregado
+    Labirinto* solucao = NULL;
     int opcao;
     
     do {
@@ -40,11 +41,12 @@ void menu() {
                 } else {
                     printf("Erro ao carregar o arquivo.\n");
                 }
+
+                Labirinto * solucao = cria_labirinto_vazio(labirinto->linhas,labirinto->colunas);
                 break;
             }
             case 2: {
-                // Placeholder para processar o labirinto
-                printf("Funcionalidade ainda não implementada.\n");
+                movimenta_estudante(labirinto, labirinto->posicao_inicial[0], labirinto->posicao_inicial[1], solucao);
                 break;
             }
             case 3: {
