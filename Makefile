@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Iinclude
-SRC = src/menu.c src/main.c src/Labirinto.c
+SRC = src/menu.c src/main.c src/Labirinto.c src/Backtracking.c
 OBJ = $(SRC:.c=.o)
 TARGET = make
 

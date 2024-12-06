@@ -5,6 +5,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Representação de uma posição no labirinto
+typedef struct {
+    int linha;
+    int coluna;
+} Posicao;
+
+// Representação do labirinto completo
 typedef struct {
     int linhas;
     int colunas;
@@ -12,7 +19,9 @@ typedef struct {
     int** matriz;
 } Labirinto;
 
+// Funções do labirinto
 Labirinto* carregar_labirinto(const char* nome_arquivo);
 void liberar_labirinto(Labirinto* labirinto);
 
-#endif //LABIRINTO_H
+
+#endif // LABIRINTO_H

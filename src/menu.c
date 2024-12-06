@@ -3,6 +3,7 @@
 //
 #include "../include/Labirinto.h"
 #include "../include/Menu.h"
+#include "../include/Backtracking.h"
 
 void menu() {
     Labirinto* labirinto = NULL; // Ponteiro para armazenar o labirinto carregado
@@ -33,14 +34,14 @@ void menu() {
                 labirinto = carregar_labirinto(nome_arquivo);
                 if (labirinto != NULL) {
                     printf("Labirinto carregado com sucesso!\n");
-                } else {
+                } else {    
                     printf("Erro ao carregar o arquivo.\n");
                 }
                 break;
             }
             case 2:
-                // Placeholder para processar o labirinto
-                printf("Funcionalidade ainda não implementada.\n");
+            //resolve por backtracking usando pilha
+                backtracking_labirinto(labirinto);
                 break;
             case 3:
                 printf("Saindo do programa.\n");

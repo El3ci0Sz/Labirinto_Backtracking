@@ -1,17 +1,24 @@
 #include "../include/Labirinto.h"
+#include "../include/Backtracking.h"
 
-// Função para carregar o labirinto de um arquivo
 Labirinto* carregar_labirinto(const char* nome_arquivo) {
     FILE* arquivo = fopen(nome_arquivo, "r");
-    if (arquivo == NULL) {
-        perror("Erro ao abrir o arquivo");
+    if (!arquivo) {
+        printf("Erro ao abrir o arquivo.\n");
         return NULL;
     }
 
     Labirinto* labirinto = (Labirinto*)malloc(sizeof(Labirinto));
-    if (fscanf(arquivo, "%d %d %d", &labirinto->linhas, &labirinto->colunas, &labirinto->chaves) != 3) {
+    if (!labirinto) {
+        printf("Erro de memória.\n");
         fclose(arquivo);
+        return NULL;
+    }
+
+    if (fscanf(arquivo, "%d %d %d\n", &labirinto->linhas, &labirinto->colunas, &labirinto->chaves) != 3) {
+        printf("Erro ao ler as dimensões ou chaves do labirinto.\n");
         free(labirinto);
+        fclose(arquivo);
         return NULL;
     }
 
@@ -22,27 +29,25 @@ Labirinto* carregar_labirinto(const char* nome_arquivo) {
 
     for (int i = 0; i < labirinto->linhas; i++) {
         for (int j = 0; j < labirinto->colunas; j++) {
-            char celula;
-            if (fscanf(arquivo, " %c", &celula) != 1) {
-                fclose(arquivo);
-                liberar_labirinto(labirinto);
-                return NULL;
-            }
-            labirinto->matriz[i][j] = celula - '0';
+            char c;
+            fscanf(arquivo, "%c", &c);
+            labirinto->matriz[i][j] = c - '0';
         }
+        fgetc(arquivo);
     }
 
     fclose(arquivo);
     return labirinto;
 }
 
-// Função para liberar a memória do labirinto
 void liberar_labirinto(Labirinto* labirinto) {
-    if (labirinto == NULL) return;
-
+    if (!labirinto) return;
     for (int i = 0; i < labirinto->linhas; i++) {
         free(labirinto->matriz[i]);
     }
     free(labirinto->matriz);
     free(labirinto);
 }
+
+
+
