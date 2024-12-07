@@ -6,18 +6,23 @@
 #include <string.h>
 
 typedef struct {
+    int linha;
+    int coluna;
+} Posicao;
+
+
+// Representação do labirinto completo
+typedef struct {
     int linhas;
     int colunas;
     int chaves;
     int** matriz;
     int movimentos;
-    int posicao_inicial[2];
 } Labirinto;
 
+// Funções do labirinto
 Labirinto* carregar_labirinto(const char* nome_arquivo);
 void liberar_labirinto(Labirinto* labirinto);
-void imprimir_labirinto(Labirinto* labirinto);
-void exibir_labirinto_visual(Labirinto* labirinto);
-Labirinto* cria_labirinto_vazio(int linhas, int colunas);
 
-#endif //LABIRINTO_H
+
+#endif // LABIRINTO_H
