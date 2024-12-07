@@ -1,23 +1,16 @@
-# CC = gcc
-# CFLAGS = -Iinclude
-# SRC = src/menu.c src/main.c src/Labirinto.c src/LabirintoTeste.c
-# OBJ = $(SRC:.c=.o)
-# TARGET = make
+CC = gcc
+CFLAGS = -Iinclude
+SRC = src/menu.c src/main.c src/Labirinto.c src/Backtracking.c
+OBJ = $(SRC:.c=.o)
+TARGET = make
 
+all: $(TARGET)
 
-# all: $(TARGET)
+$(TARGET): $(OBJ)
+	$(CC) $(OBJ) -o $(TARGET)
 
-# $(TARGET): $(OBJ)
-# 	$(CC) $(OBJ) -o $(TARGET)
-
-# %.o: %.c
-# 	$(CC) $(CFLAGS) -c $< -o $@
-
-all:
-	gcc src/menu.c src/main.c src/Labirinto.c src/LabirintoTeste.c src/Backtracking.c -o teste
-
-run:
-	./teste
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f teste
+	rm -f $(OBJ) $(TARGET)
