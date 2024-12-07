@@ -1,9 +1,16 @@
 #include "../include/Labirinto.h"
-#include "../include/Backtracking.h"
 
-// Estrutura para armazenar a posição no labirinto
-Labirinto* carregar_labirinto(const char* nome_arquivo) {
-    FILE* arquivo = fopen(nome_arquivo, "r");
+/*
+    Função:
+        Apartir de dados de um arquivo, essa função cria um labirinto e preenche cada célula
+        adequadamente.
+    input:
+        caminho_arquivo (const char*): Armazena um caminho cara um arquivo.
+    output:
+        labirinto (Labirinto): Retorna uma Struct do tipo Labirinto.
+*/
+Labirinto* carregar_labirinto(const char* caminho_arquivo) {
+    FILE* arquivo = fopen(caminho_arquivo, "r");
     if (!arquivo) {
         printf("Erro ao abrir o arquivo.\n");
         return NULL;
@@ -43,6 +50,7 @@ Labirinto* carregar_labirinto(const char* nome_arquivo) {
     return labirinto;
 }
 
+//Libera memoria, ao dar free no labirinto criado.
 void liberar_labirinto(Labirinto* labirinto) {
     if (!labirinto) return;
     for (int i = 0; i < labirinto->linhas; i++) {

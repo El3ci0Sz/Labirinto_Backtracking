@@ -1,94 +1,113 @@
 #include "../include/Backtracking.h"
-#include "../include/Labirinto.h"
+/*
+ Função:
+    Função recursiva que tem como objetivo encontrar uma saida valida em um labirinto, utilizando Backtracking.
 
+ inputs:
+    labirinto (Labirinto):Struct que contem os dados da tabela e variaveis auxiliares.
+    linha (int) & coluna (int): São os indices, da posição inicial.
+    movimentos (*int): Armazena a quantidade de movimentos.
+    coluna_final: Armazena o indice da coluna em que que se chegou ao final.
 
-bool movimenta_estudante(Labirinto *labirinto, int linha, int coluna, int *movimentos_totais, int *coluna_final) {
-    // Imprime a posição atual
+ output:
+    true se o labirinto tem uma saida.
+    false se o labirinto nao tem uma saida.
+*/
+
+bool movimenta_estudante(Labirinto *labirinto, int linha, int coluna, int *movimentos, int *coluna_final) {
+    // Imprime a posição atual em cada iteração.
     printf("Linha: %d Coluna: %d\n", linha, coluna);
-    (*movimentos_totais)++;
+    (*movimentos)++;
 
-    // Verifica se chegou na primeira linha (linha 0)
+    // Verifica se chegou ao final do Labirinto.
     if (linha == 0) {
         (*coluna_final) = coluna;
         return true;
     }
 
-    // Marca a posição atual como visitada
+    // Marca a posição atual como visitada.
     int temp = labirinto->matriz[linha][coluna];
     labirinto->matriz[linha][coluna] = -1;
 
-    // Movimentos possíveis: cima, direita, baixo, esquerda
-    int movimentos_linha[] = {-1, 0, 1, 0};
-    int movimentos_coluna[] = {0, 1, 0, -1};
+    // Tenta cada um dos 4 possíveis: cima, baixo, direita, esquerda.
+    int movimentos_linha[] = {-1, 1, 0, 0};
+    int movimentos_coluna[] = {0, 0, -1, 1};
 
-    // Tenta cada direção
     for (int i = 0; i < 4; i++) {
         int nova_linha = linha + movimentos_linha[i];
         int nova_coluna = coluna + movimentos_coluna[i];
 
-        // Verifica se o movimento é válido
+        // Verifica se o movimento pode ser feito, e o que deve ser feito, dependendo do conteudo de cada célula.
         if (nova_linha >= 0 && nova_linha < labirinto->linhas && nova_coluna >= 0 && nova_coluna < labirinto->colunas) {
-            // Se a célula é acessível (1 ou 3)
             if (labirinto->matriz[nova_linha][nova_coluna] == 1 || labirinto->matriz[nova_linha][nova_coluna] == 3) {
-                bool usou_chave = false;
+                bool chave_usada = false;
 
-                // Se for célula vermelha (3), verifica chave
+                //Célula [3], Porta.
                 if (labirinto->matriz[nova_linha][nova_coluna] == 3) {
                     if (labirinto->chaves > 0) {
-                        labirinto->chaves--; // Usa uma chave
-                        usou_chave = true;
+                        labirinto->chaves--; 
+                        chave_usada = true;
                     } else {
-                        continue; // Sem chave, ignora
+                        continue; 
                     }
                 }
 
-                // Movimenta recursivamente
-                if (movimenta_estudante(labirinto, nova_linha, nova_coluna, movimentos_totais, coluna_final)) {
+                //Recursividade:
+                if (movimenta_estudante(labirinto, nova_linha, nova_coluna, movimentos, coluna_final)) {
                     return true;
                 }
 
-                // Se o movimento falhou, devolve a chave usada
-                if (usou_chave) {
+                if (chave_usada) {
                     labirinto->chaves++;
                 }
             }
         }
     }
 
-    // Volta para a posição anterior (backtracking)
+    //Caso nenhum dos movimentos funcione, Backtracking:
     labirinto->matriz[linha][coluna] = temp;
     return false;
 }
 
-void backtracking_labirinto(Labirinto *labirinto) {
-    Posicao inicial = {-1, -1};
+/*
+Função:
+    Chama a função recursiva movimenta_estudante para inciar a busca por uma saida, e imprime a saida
+    achada ou se não a saida, ao final.
 
-    // Localiza a posição inicial do estudante (célula 0)
+input:
+    labirinto (Labirinto): Struct que contem os dados da tabela e variaveis auxiliares.
+*/
+
+void backtracking_labirinto(Labirinto *labirinto) {
+    int linha_inicial = -1;
+    int coluna_inicial = -1;
+
+    // Localiza a posição inicial do estudante.
     for (int i = 0; i < labirinto->linhas; i++) {
         for (int j = 0; j < labirinto->colunas; j++) {
             if (labirinto->matriz[i][j] == 0) {
-                inicial.linha = i;
-                inicial.coluna = j;
+                linha_inicial = i;
+                coluna_inicial = j;
                 break;
             }
         }
-        if (inicial.linha != -1) {
+        if (linha_inicial != -1) {
             break;
         }
     }
 
-    if (inicial.linha == -1) {
+    if (linha_inicial == -1 || coluna_inicial == -1) {
         printf("Labirinto inválido: sem posição inicial.\n");
         return;
     }
 
-    int movimentos_totais = 0;
+    int movimentos = 0;
     int coluna_final = 0;
 
-    if (movimenta_estudante(labirinto, inicial.linha, inicial.coluna, &movimentos_totais, &coluna_final)) {
-        printf("O estudante se movimentou %d vezes e chegou na coluna %d da primeira linha.\n", movimentos_totais, coluna_final);
+    if (movimenta_estudante(labirinto, linha_inicial, coluna_inicial, &movimentos, &coluna_final)) {
+        printf("O estudante se movimentou %d vezes e chegou na coluna %d da primeira linha.\n", movimentos, coluna_final);
     } else {
-        printf("O estudante se movimentou %d vezes e percebeu que o labirinto nao tem saida.\n", movimentos_totais);
+        printf("O estudante se movimentou %d vezes e percebeu que o labirinto nao tem saida.\n", movimentos);
     }
 }
 

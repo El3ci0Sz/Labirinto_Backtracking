@@ -4,14 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-typedef struct {
-    int linha;
-    int coluna;
-} Posicao;
+#include <stdbool.h>
 
 
-// Representação do labirinto completo
+
+// Struct que representa o labirinto, e que contem algumas variaveis auxiliares.
 typedef struct {
     int linhas;
     int colunas;
@@ -20,7 +17,7 @@ typedef struct {
     int movimentos;
 } Labirinto;
 
-// Funções do labirinto
+// Funções de criação do Labirinto.
 Labirinto* carregar_labirinto(const char* nome_arquivo);
 void liberar_labirinto(Labirinto* labirinto);
 
