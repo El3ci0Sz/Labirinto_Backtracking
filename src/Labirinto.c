@@ -49,5 +49,20 @@ void liberar_labirinto(Labirinto* labirinto) {
     free(labirinto);
 }
 
+bool posicaoValida(Labirinto* labirinto, int linha, int coluna) {
+    // Verifica se está dentro dos limites do labirinto
+    if (linha < 0 || linha >= labirinto->linhas || coluna < 0 || coluna >= labirinto->colunas) {
+        return false;
+    }
+
+    // Verifica se a posição é transitável
+    return labirinto->matriz[linha][coluna] == 1 || labirinto->matriz[linha][coluna] == 0;
+}
+
+bool ehObjetivo(Labirinto* labirinto, int linha, int coluna) {
+    // O objetivo é qualquer célula na primeira linha (linha == 0)
+    return linha == 0;
+}
+
 
 

@@ -41,7 +41,7 @@ void menu() {
             }
             case 2:
             //resolve por backtracking usando pilha
-                backtracking_labirinto(labirinto);
+                resolverLabirinto(labirinto);
                 break;
             case 3:
                 printf("Saindo do programa.\n");

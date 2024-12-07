@@ -1,10 +1,13 @@
 #ifndef UNTITLED1_BACKTRACKING_H
 #define UNTITLED1_BACKTRACKING_H
+
 #include "Labirinto.h"
 
-void backtracking_labirinto(Labirinto* labirinto);
+// Funções principais
+void resolverLabirinto(Labirinto* labirinto);
+bool buscarCaminhoBT(Labirinto* labirinto, int linha, int coluna, int* movimentos_totais);
 
-//estrutura pilha
+// Estrutura da Pilha
 typedef struct Nodo {
     Posicao posicao;
     struct Nodo* proximo;
@@ -14,12 +17,11 @@ typedef struct {
     Nodo* topo;
 } Pilha;
 
-
-//funcoes pilha
-Pilha* criar_pilha();
+Pilha* criarPilha();
 void empilhar(Pilha* pilha, Posicao posicao);
 Posicao desempilhar(Pilha* pilha);
-int pilha_vazia(Pilha* pilha);
-void liberar_pilha(Pilha* pilha);
+int pilhaVazia(Pilha* pilha);
+void liberarPilha(Pilha* pilha);
 
-#endif //UNTITLED1_BACKTRACKING_H
+
+#endif // UNTITLED1_BACKTRACKING_H
