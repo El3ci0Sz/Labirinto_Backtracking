@@ -20,6 +20,7 @@ typedef struct {
 // Funções de criação do Labirinto.
 Labirinto* carregar_labirinto(const char* nome_arquivo);
 void liberar_labirinto(Labirinto* labirinto);
+void exibir_labirinto_visual(Labirinto* labirinto);
 
 
 #endif // LABIRINTO_H
