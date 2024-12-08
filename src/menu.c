@@ -1,13 +1,13 @@
 #include "../include/Labirinto.h"
 #include "../include/Menu.h"
 #include "../include/Backtracking.h"
+#include "../include/LabirintoTeste.h"
 
 void menu() {
     Labirinto* labirinto = NULL;
     int opcao;
-    
+
     do {
-        // Exibe o menu principal
         printf("-----------------------------------------------------------\n");
         printf("|  VOCE ESTÁ PRESO NO PRÉDIO DO SAPIENS, FUJA SE FOR CAPAZ!|\n");
         printf("|  1) Carregar novo arquivo de dados                       |\n");
@@ -16,7 +16,6 @@ void menu() {
         printf("|  4) Sair do programa                                     |\n");
         printf("-----------------------------------------------------------\n");
         printf("Digite sua escolha: ");
-
         scanf("%d", &opcao);
 
         switch (opcao) {
@@ -25,33 +24,50 @@ void menu() {
                 printf("Digite o nome do arquivo: ");
                 scanf("%s", nome_arquivo);
 
-                // Libera o labirinto anterior se já existir
                 if (labirinto != NULL) {
                     liberar_labirinto(labirinto);
                 }
 
-                // Carrega o novo labirinto
                 labirinto = carregar_labirinto(nome_arquivo);
                 if (labirinto != NULL) {
                     printf("Labirinto carregado com sucesso!\n");
-
-                } else {    
+                    exibir_labirinto_visual(labirinto);
+                } else {
                     printf("Erro ao carregar o arquivo.\n");
                 }
                 break;
             }
-            case 2:
-                backtracking_labirinto(labirinto);
+            case 2: {
+                if (labirinto != NULL) {
+                    printf("Processando o labirinto...\n");
+                    backtracking_labirinto(labirinto);
+                } else {
+                    printf("Nenhum labirinto carregado. Por favor, carregue ou gere um labirinto primeiro.\n");
+                }
                 break;
-            case 3:
+            }
+            case 3: {
+                if (labirinto != NULL) {
+                    liberar_labirinto(labirinto);
+                }
+
+                labirinto = gerar_labirinto_aleatorio(10, 10, 5, 3, 80);
+                if (labirinto != NULL) {
+                    printf("Labirinto de teste gerado com sucesso!\n");
+                    exibir_labirinto_visual(labirinto);
+                } else {
+                    printf("Erro ao gerar o labirinto de teste.\n");
+                }
+                break;
+            }
+            case 4:
                 printf("Saindo do programa.\n");
                 break;
             default:
                 printf("Opção inválida. Tente novamente.\n");
         }
-    } while (opcao != 3);
+    } while (opcao != 4);
 
-    // Libera memória antes de sair, se necessário
     if (labirinto != NULL) {
         liberar_labirinto(labirinto);
     }
