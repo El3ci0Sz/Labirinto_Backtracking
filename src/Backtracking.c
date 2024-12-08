@@ -1,4 +1,13 @@
 #include "../include/Backtracking.h"
+#define MODO_ANALISE
+
+//Definição das variaveis do modo analise.
+#ifdef MODO_ANALISE
+    int numero_chamadas_recursivas = 0;
+    int nivel_atual = 0;
+    int profundidade = 0;
+#endif
+
 /*
  Função:
     Função recursiva que tem como objetivo encontrar uma saida valida em um labirinto, utilizando Backtracking.
@@ -15,21 +24,34 @@
 */
 
 bool movimenta_estudante(Labirinto *labirinto, int linha, int coluna, int *movimentos, int *coluna_final) {
-    // Imprime a posição atual em cada iteração.
-    printf("Linha: %d Coluna: %d\n", linha, coluna);
+    #ifdef MODO_ANALISE
+        numero_chamadas_recursivas++;
+        nivel_atual++;
+        if (nivel_atual > profundidade) {
+            profundidade = nivel_atual;
+        }
+    #endif
+
+    // Imprime a posição atual
+    printf("Linha: %d Coluna: %d\n", linha+1, coluna+1);
     (*movimentos)++;
 
-    // Verifica se chegou ao final do Labirinto.
+    // Verifica se chegou ao final
     if (linha == 0) {
         (*coluna_final) = coluna;
+
+        #ifdef MODO_ANALISE
+            nivel_atual--;
+        #endif
+
         return true;
     }
 
-    // Marca a posição atual como visitada.
+    // Marca a posição como visitada
     int temp = labirinto->matriz[linha][coluna];
     labirinto->matriz[linha][coluna] = -1;
 
-    // Tenta cada um dos 4 possíveis: cima, baixo, direita, esquerda.
+    // Movimentos possíveis
     int movimentos_linha[] = {-1, 1, 0, 0};
     int movimentos_coluna[] = {0, 0, -1, 1};
 
@@ -37,24 +59,41 @@ bool movimenta_estudante(Labirinto *labirinto, int linha, int coluna, int *movim
         int nova_linha = linha + movimentos_linha[i];
         int nova_coluna = coluna + movimentos_coluna[i];
 
-        // Verifica se o movimento pode ser feito, e o que deve ser feito, dependendo do conteudo de cada célula.
         if (nova_linha >= 0 && nova_linha < labirinto->linhas && nova_coluna >= 0 && nova_coluna < labirinto->colunas) {
-            if (labirinto->matriz[nova_linha][nova_coluna] == 1 || labirinto->matriz[nova_linha][nova_coluna] == 3) {
+            if (labirinto->matriz[nova_linha][nova_coluna] == 1 || labirinto->matriz[nova_linha][nova_coluna] == 3|| 
+                labirinto->matriz[nova_linha][nova_coluna] == 4) {
                 bool chave_usada = false;
+                bool chave_pega_chao = false;
 
-                //Célula [3], Porta.
+                // Celula [3] = Porta.
+
                 if (labirinto->matriz[nova_linha][nova_coluna] == 3) {
                     if (labirinto->chaves > 0) {
                         labirinto->chaves--; 
                         chave_usada = true;
                     } else {
-                        continue; 
+                        continue;
                     }
                 }
 
-                //Recursividade:
+                //Celuna [4] = Chave no chão.
+
+                if (labirinto->matriz[nova_linha][nova_coluna] == 4) {
+                    labirinto->chaves++;
+                    chave_pega_chao = true;
+                }
+
+                // Chamada recursiva
                 if (movimenta_estudante(labirinto, nova_linha, nova_coluna, movimentos, coluna_final)) {
+                    #ifdef MODO_ANALISE
+                        nivel_atual--;
+                    #endif
                     return true;
+                }
+
+                // Caso tenha ido para o caminho errado e esteja voltando, devolve as chaves:
+                if (chave_pega_chao) {
+                    labirinto->chaves--;
                 }
 
                 if (chave_usada) {
@@ -64,8 +103,13 @@ bool movimenta_estudante(Labirinto *labirinto, int linha, int coluna, int *movim
         }
     }
 
-    //Caso nenhum dos movimentos funcione, Backtracking:
+    // Backtracking
     labirinto->matriz[linha][coluna] = temp;
+
+    #ifdef MODO_ANALISE
+        nivel_atual--;
+    #endif
+
     return false;
 }
 
@@ -79,10 +123,16 @@ input:
 */
 
 void backtracking_labirinto(Labirinto *labirinto) {
+    #ifdef MODO_ANALISE
+        numero_chamadas_recursivas = 0;
+        nivel_atual = 0;
+        profundidade = 0;
+    #endif
+
     int linha_inicial = -1;
     int coluna_inicial = -1;
-
-    // Localiza a posição inicial do estudante.
+    int movimentos = 0;
+    int coluna_final = 0;
     for (int i = 0; i < labirinto->linhas; i++) {
         for (int j = 0; j < labirinto->colunas; j++) {
             if (labirinto->matriz[i][j] == 0) {
@@ -100,14 +150,14 @@ void backtracking_labirinto(Labirinto *labirinto) {
         printf("Labirinto inválido: sem posição inicial.\n");
         return;
     }
-
-    int movimentos = 0;
-    int coluna_final = 0;
-
+    
     if (movimenta_estudante(labirinto, linha_inicial, coluna_inicial, &movimentos, &coluna_final)) {
-        printf("O estudante se movimentou %d vezes e chegou na coluna %d da primeira linha.\n", movimentos, coluna_final);
+        printf("O estudante se movimentou %d vezes e chegou na coluna %d da primeira linha.\n", movimentos, coluna_final + 1);
     } else {
         printf("O estudante se movimentou %d vezes e percebeu que o labirinto nao tem saida.\n", movimentos);
     }
+    #ifdef MODO_ANALISE
+        printf("\nANALISE:\nNIVEL MAXIMO DE RECURSIVIDADE: %d\nNUMERO TOTAL DE CHAMADAS RECURSIVAS: %d\n\n",profundidade,numero_chamadas_recursivas);
+    #endif
 }
 

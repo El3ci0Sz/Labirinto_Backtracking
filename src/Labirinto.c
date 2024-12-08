@@ -60,7 +60,6 @@ void liberar_labirinto(Labirinto* labirinto) {
     free(labirinto);
 }
 
-
 // Função para exibir o labirinto no terminal com cores
 void exibir_labirinto_visual(Labirinto* labirinto) {
     for (int i = 0; i < labirinto->linhas; i++) {
@@ -76,7 +75,10 @@ void exibir_labirinto_visual(Labirinto* labirinto) {
                     printf("\033[0;34m#\033[0m "); // Azul para paredes
                     break;
                 case 3:
-                    printf("\033[0;31m|\033[0m "); // Vermelho para portas
+                    printf("\033[0;31mD\033[0m "); // Vermelho para portas
+                    break;
+                case 4:
+                    printf("\033[0;33mK\033[0m "); // Chave no chão em amarelo
                     break;
             }
         }
